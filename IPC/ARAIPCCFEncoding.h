@@ -34,14 +34,14 @@ extern "C" {
 #endif
 
 
-ARAIPCMessageEncoder ARAIPCCFCreateMessageEncoder(void);
-__attribute__((cf_returns_retained)) CFDictionaryRef ARAIPCCFCopyMessageEncoderDictionary(ARAIPCMessageEncoderRef messageEncoder);
-__attribute__((cf_returns_retained)) CFDictionaryRef ARAIPCCFCopyMessageEncoderDictionaryAddingMessageID(ARAIPCMessageEncoderRef messageEncoder, ARAIPCMessageID messageIDValue);
-__attribute__((cf_returns_retained)) CFDataRef ARAIPCCFCreateMessageEncoderData(ARAIPCMessageEncoderRef messageEncoderRef);
+ARAIPCMessageEncoder * ARAIPCCFCreateMessageEncoder(void);
+__attribute__((cf_returns_retained)) CFDictionaryRef ARAIPCCFCopyMessageEncoderDictionary(ARAIPCMessageEncoder * messageEncoder);
+__attribute__((cf_returns_retained)) CFDictionaryRef ARAIPCCFCopyMessageEncoderDictionaryAddingMessageID(ARAIPCMessageEncoder * messageEncoder, ARAIPCMessageID messageID);
+__attribute__((cf_returns_retained)) CFDataRef ARAIPCCFCreateMessageEncoderData(ARAIPCMessageEncoder * messageEncoder);
 
-ARAIPCMessageDecoder ARAIPCCFCreateMessageDecoderWithDictionary(CFDictionaryRef messageDictionary);
-ARAIPCMessageID ARAIPCCFGetMessageIDFromDictionary(ARAIPCMessageDecoderRef messageDecoderRef);
-ARAIPCMessageDecoder ARAIPCCFCreateMessageDecoder(CFDataRef messageData);
+ARAIPCMessageDecoder * ARAIPCCFCreateMessageDecoderWithDictionary(CFDictionaryRef messageDictionary);
+ARAIPCMessageID ARAIPCCFGetMessageIDFromDictionary(ARAIPCMessageDecoder * messageDecoder);
+ARAIPCMessageDecoder * ARAIPCCFCreateMessageDecoder(CFDataRef messageData);
 
 
 #if defined(__cplusplus)
