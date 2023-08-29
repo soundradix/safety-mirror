@@ -171,8 +171,8 @@ public:
 
     //! send function: send message create using the encoder, blocking until a reply has been received.
     //! If an empty reply ("void") is expected, the replyHandler should be nullptr.
-    //! A send function can be called from any thread, but not concurrently.
-    virtual void sendMessage (const bool stackable, ARAIPCMessageID messageID, ARAIPCMessageEncoder* encoder,
+    //! A send function can be called from any thread, concurrent calls will be serialized.
+    virtual void sendMessage (ARAIPCMessageID messageID, ARAIPCMessageEncoder* encoder,
                               ARAIPCReplyHandler* replyHandler, void* replyHandlerUserData) = 0;
 
     //! Test if the receiver runs on a different architecture with different endianess.
