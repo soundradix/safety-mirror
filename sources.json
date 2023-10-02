@@ -1,0 +1,9 @@
+[
+    {
+        "name": "ara_api",
+        "url": "https://github.com/Celemony/ARA_API.git",
+        "branches": [
+            "main"
+        ]
+    }
+]
