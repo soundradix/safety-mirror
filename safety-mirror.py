@@ -29,11 +29,20 @@ for repo in json.load(open("sources.json")):
                 "git",
                 "merge",
                 "--allow-unrelated-histories",
+                "--no-commit",
                 f"""{repo["name"]}/{branch}""",
             ]
         )
-        has_conflicts = (
-            command_output(["git", "diff", "--name-only", "--diff-filter=U"]) != ""
-        )
-        subprocess.run(["git", "checkout", "main", "--", "."])
-        subprocess.run(["git", "commit"] + ([] if has_conflicts else ["--amend"]))
+        if subprocess.run(["git", "merge", "HEAD"]).returncode == 0:
+            # Not merging
+            continue
+        for status in command_output(["git", "status", "--porcelain"]).splitlines():
+            if not status.startswith("A"):
+                continue
+            filename = status[3:].strip()
+            if status.startswith("A  "):
+                subprocess.run(["git", "rm", "-f", filename])
+            elif status.startswith("AA "):
+                subprocess.run(["git", "reset", "--", filename])
+                subprocess.run(["git", "checkout", "--", filename])
+        subprocess.run(["git", "commit"])
