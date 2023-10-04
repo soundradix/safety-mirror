@@ -5,5 +5,12 @@
         "branches": [
             "main"
         ]
+    },
+    {
+        "name": "ara_lib",
+        "url": "https://github.com/Celemony/ARA_Library.git",
+        "branches": [
+            "main"
+        ]
     }
 ]
