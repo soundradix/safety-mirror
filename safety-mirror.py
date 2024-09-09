@@ -33,22 +33,19 @@ for repo in json.load(open("sources.json")):
                 f"""{repo["name"]}/{branch}""",
             ]
         )
-        if subprocess.run(["git", "merge", "HEAD"]).returncode == 0:
-            # Not merging
-            continue
-        adds = []
-        add_adds = []
+        to_del = []
+        to_reset = []
         for status in command_output(["git", "status", "--porcelain"]).splitlines():
-            if not status.startswith("A"):
-                continue
             filename = status[3:].strip()
-            if status.startswith("A  "):
-                adds.append(filename)
-            elif status.startswith("AA "):
-                add_adds.append(filename)
-        if adds:
-            subprocess.run(["git", "rm", "-f"] + adds)
-        if add_adds:
-            subprocess.run(["git", "reset", "--"] + add_adds)
-            subprocess.run(["git", "checkout", "--"] + add_adds)
+            {
+                "A  ": to_del,
+                "DU ": to_del,
+                "AA ": to_reset,
+                "UU ": to_reset,
+            }.get(status[:3], []).append(filename)
+        if to_del:
+            subprocess.run(["git", "rm", "-f"] + to_del)
+        if to_reset:
+            subprocess.run(["git", "reset", "--"] + to_reset)
+            subprocess.run(["git", "checkout", "--"] + to_reset)
         subprocess.run(["git", "commit"])
